@@ -1,0 +1,8 @@
+--Site:https://github.com/ShawnMathews320/DatabaseFundamentals/new/master
+
+USE Examples;
+GO
+SELECT DISTINCT InvoiceID --prevent the retrieval of duplicate titles
+FROM dbo.ActiveInvoices
+ORDER BY InvoiceID;
+GO
