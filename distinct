@@ -6,3 +6,4 @@ SELECT DISTINCT InvoiceID --prevent the retrieval of duplicate titles
 FROM dbo.ActiveInvoices
 ORDER BY InvoiceID;
 GO
+h
