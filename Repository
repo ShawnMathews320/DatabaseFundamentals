@@ -200,4 +200,147 @@ Version_Name
 Microsoft SQL Server 2017 (RTM) - 14.0.1000.169 (X64)   Aug 22 2017 17:04:49   Copyright (C) 2017 Microsoft Corporation  Express Edition (64-bit) on Windows 10 Home 10.0 <X64> (Build 17763: ) 
 --end
 
+#11
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get Current Language of SQL Server
+
+--Code Start
+SELECT @@LANGUAGE AS Current_Language; 
+--Code end 
+
+-Start Output
+Current_Language
+us_english
+--end
+
+#12
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Disable all constraints of all tables
+
+--Code Start
+EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+--Code end 
+
+--Start Output
+Commands completed successfully
+--end
+
+#13
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get precision level used by decimal and numeric as current set in Server
+
+--Code Start
+SELECT @@MAX_PRECISION AS 'MAX_PRECISION' 
+--Code end
+
+--Start Output
+MAX_PRECISION
+38
+--end
+
+#14
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Return Server Name of SQL Server
+
+--Code Start
+SELECT @@SERVERNAME AS 'Server_Name'
+--end
+
+--Start Output
+Server_Name
+LAPTOP-0B8B25U3\SQLEXPRESS
+--end
+
+#15
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Retrieve Free Space of Hard Disk
+
+--Code Start
+EXEC master..xp_fixeddrives
+--Code end
+
+--Start Output
+drive	MB free
+C	67545
+--end
+
+#16
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Disable All Trigger for database
+
+--Code Start
+Use Examples
+Exec sp_msforeachtable "ALTER TABLE ? DISABLE TRIGGER all"  
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+#17
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Enable All Trigger for database
+
+--Code Start
+Use Examples
+Exec sp_msforeachtable "ALTER TABLE ? ENABLE TRIGGER all"
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+#18
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--List of Stored procedure modified in last N days
+
+--Code Start
+SELECT name,modify_date  
+FROM sys.objects  
+WHERE type='P'  
+AND DATEDIFF(D,modify_date,GETDATE())< 40
+--Code end
+
+--Start Output
+name	modify_date
+sp_upgraddiagrams	2019-10-17 13:39:40.460
+sp_helpdiagrams	2019-10-17 13:39:40.980
+sp_helpdiagramdefinition	2019-10-17 13:39:41.237
+sp_creatediagram	2019-10-17 13:39:41.277
+sp_renamediagram	2019-10-17 13:39:41.313
+sp_alterdiagram	2019-10-17 13:39:41.340
+sp_dropdiagram	2019-10-17 13:39:41.383
+--end
+
+#19
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--List of Stored procedure created in last N days
+
+--Code Start
+SELECT name,sys.objects.create_date  
+FROM sys.objects  
+WHERE type='P'  
+AND DATEDIFF(D,sys.objects.create_date,GETDATE())< 20
+--Code end
+
+--Start Output
+name	create_date
+sp_upgraddiagrams	2019-10-17 13:39:40.460
+sp_helpdiagrams	2019-10-17 13:39:40.980
+sp_helpdiagramdefinition	2019-10-17 13:39:41.237
+sp_creatediagram	2019-10-17 13:39:41.277
+sp_renamediagram	2019-10-17 13:39:41.313
+sp_alterdiagram	2019-10-17 13:39:41.340
+sp_dropdiagram	2019-10-17 13:39:41.383
+--end
+
+#20
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Recompile a Stored Procedure
+
+--Code Start
+exec sp_recompile'USP_Retrieve_City_Information';
+GO
+--Code end
+
 
