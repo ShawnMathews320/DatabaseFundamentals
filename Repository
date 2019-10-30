@@ -1,0 +1,203 @@
+#1
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+-- Retrieve List of All Database
+
+--Code Start
+EXEC sp_helpdb 
+--Code end
+
+--Start Output
+name	db_size	owner	dbid	created	status	compatibility_level
+Examples	     16.00 MB	LAPTOP-0B8B25U3\Shawn	5	Oct 17 2019	Status=ONLINE, Updateability=READ_WRITE, UserAccess=MULTI_USER, Recovery=SIMPLE, Version=869, Collation=SQL_Latin1_General_CP1_CI_AS, SQLSortOrder=52, IsAutoClose, IsAutoCreateStatistics, IsAutoUpdateStatistics, IsFullTextEnabled	140
+master	      6.00 MB	sa	1	Apr  8 2003	Status=ONLINE, Updateability=READ_WRITE, UserAccess=MULTI_USER, Recovery=SIMPLE, Version=869, Collation=SQL_Latin1_General_CP1_CI_AS, SQLSortOrder=52, IsAutoCreateStatistics, IsAutoUpdateStatistics	140
+model	     16.00 MB	sa	3	Apr  8 2003	Status=ONLINE, Updateability=READ_WRITE, UserAccess=MULTI_USER, Recovery=SIMPLE, Version=869, Collation=SQL_Latin1_General_CP1_CI_AS, SQLSortOrder=52, IsAutoCreateStatistics, IsAutoUpdateStatistics	140
+msdb	     15.44 MB	sa	4	Aug 22 2017	Status=ONLINE, Updateability=READ_WRITE, UserAccess=MULTI_USER, Recovery=SIMPLE, Version=869, Collation=SQL_Latin1_General_CP1_CI_AS, SQLSortOrder=52, IsAutoCreateStatistics, IsAutoUpdateStatistics, IsFullTextEnabled	140
+tempdb	     16.00 MB	sa	2	Oct 30 2019	Status=ONLINE, Updateability=READ_WRITE, UserAccess=MULTI_USER, Recovery=SIMPLE, Version=869, Collation=SQL_Latin1_General_CP1_CI_AS, SQLSortOrder=52, IsAutoCreateStatistics, IsAutoUpdateStatistics	140
+--end
+
+#2
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get All Stored Procedure Relate To Database
+
+--Code Start
+SELECT DISTINCT o.name, o.xtype
+FROM syscomments c  
+INNER JOIN sysobjects o ON c.id=o.id  
+WHERE o.xtype='P' 
+--Code end
+
+--Start Output
+name	xtype
+sp_add_agent_parameter	P 
+sp_add_agent_profile	P 
+sp_add_columnstore_column_dictionary	P 
+sp_add_data_file_recover_suspect_db	P 
+sp_add_log_file_recover_suspect_db	P 
+sp_add_log_shipping_alert_job	P 
+sp_add_log_shipping_primary_database	P 
+sp_add_log_shipping_primary_secondary	P 
+sp_add_log_shipping_secondary_database	P 
+sp_add_log_shipping_secondary_primary	P 
+sp_addapprole	P 
+--end
+
+#3
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get All Stored Procedure Relate To Table
+
+--Code Start
+SELECT DISTINCT o.name, o.xtype  
+FROM syscomments c  
+INNER JOIN sysobjects o ON c.id=o.id  
+WHERE c.TEXT LIKE '%Table_Name%' AND o.xtype='P' 
+--Code end
+
+--Start Output
+sp_addmergearticle	P 
+sp_addmergefilter	P 
+sp_addsynctriggers	P 
+sp_addsynctriggerscore	P 
+sp_addtabletocontents	P 
+sp_adjustpublisheridentityrange	P 
+sp_cdc_vupgrade	P 
+sp_check_constbytable_rowset	P 
+sp_check_constbytable_rowset2	P 
+sp_cleanup_temporal_history	P 
+sp_column_privileges	P 
+--end
+
+#4
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Rebuild All Index of Database
+
+--Code Start
+EXEC sp_MSforeachtable @command1="print '?' DBCC DBREINDEX ('?', ' ', 80)"  
+GO 
+EXEC sp_updatestats
+GO
+--Code end
+
+--Start Output
+Updating [dbo].[spt_fallback_db]
+    0 index(es)/statistic(s) have been updated, 0 did not require update.
+ 
+Updating [dbo].[spt_fallback_dev]
+    0 index(es)/statistic(s) have been updated, 0 did not require update.
+ 
+Updating [dbo].[spt_fallback_usg]
+    0 index(es)/statistic(s) have been updated, 0 did not require update.
+--end
+
+#5
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Retrieve All dependencies of Stored Procedure
+
+--Code Start
+;WITH stored_procedures AS (  
+SELECT  
+oo.name AS table_name,  
+ROW_NUMBER() OVER(partition by o.name,oo.name ORDER BY o.name,oo.name) AS row  
+FROM sysdepends d  
+INNER JOIN sysobjects o ON o.id=d.id  
+INNER JOIN sysobjects oo ON oo.id=d.depid  
+WHERE o.xtype = 'P' AND o.name LIKE '%SP_NAme%' )   
+SELECT Table_name FROM stored_procedures  
+WHERE row = 1
+--Code end
+
+--Start Output
+0 Rows affected
+--end
+
+#6
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get all table that don’t have identity column
+
+--Code Start
+SELECT
+TABLE_NAME FROM INFORMATION_SCHEMA.TABLES  
+where  
+Table_NAME NOT IN  
+(  
+SELECT DISTINCT c.TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS c  
+INNER  
+JOIN sys.identity_columns ic  
+on  
+(c.COLUMN_NAME=ic.NAME))  
+AND  
+TABLE_TYPE ='BASE TABLE'  
+--Code end
+
+--Start Output
+TABLE_NAME
+spt_monitor
+spt_fallback_usg
+MSreplication_options
+spt_fallback_dev
+spt_fallback_db
+--end
+
+#7
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--List of Primary Key and Foreign Key for Whole Database
+
+--Code Start
+SELECT  
+DISTINCT  
+Constraint_Name AS [Constraint],  
+Table_Schema AS [Schema],  
+Table_Name AS [TableName] FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE  
+GO
+--end
+
+--Start Output
+0 rows affected
+--end
+
+#8
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--RESEED Identity of all tables
+
+--Code Start
+EXEC sp_MSForEachTable '
+IF OBJECTPROPERTY(object_id(''?''), ''TableHasIdentity'') = 1  
+DBCC CHECKIDENT (''?'', RESEED, 0)'
+--Code end
+
+--Source Output
+Commands completed successfully
+--end
+
+#9
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--List of tables with number of records
+
+--Code Start
+CREATE TABLE #Tab  
+(  
+Table_Name [varchar](max),  
+Total_Records int
+);  
+EXEC sp_MSForEachTable @command1=' Insert Into #Tab(Table_Name, Total_Records) SELECT ''?'', COUNT(*) FROM ?'
+SELECT * FROM #Tab t ORDER BY t.Total_Records DESC;
+DROP TABLE #Tab; 
+--Code end
+
+--Start Output
+0 rows affected
+--end
+
+#10
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+-- Get the version name of SQL Server
+
+--Code Start
+SELECT @@VERSION AS Version_Name
+--Code end
+
+--Start Output
+Version_Name
+Microsoft SQL Server 2017 (RTM) - 14.0.1000.169 (X64)   Aug 22 2017 17:04:49   Copyright (C) 2017 Microsoft Corporation  Express Edition (64-bit) on Windows 10 Home 10.0 <X64> (Build 17763: ) 
+--end
+
+
