@@ -486,5 +486,24 @@ select * from INFORMATION_SCHEMA.VIEW_COLUMN_USAGE
 --end
 
 #30
+--From https://expert-only.net/sql-server/functions/sql-server-user-defined-functions-example-queries/
+-- Create the Customers Sample Table
+
+--Code Start
+
+--If the Customers Table already exists, then we drop it
+If exists(
+select 1 from sys.objects
+where object_id = object_id(N'[dbo].[CUSTOMERS]') AND type in (N'U')
+) begin
+drop table [dbo].[CUSTOMERS]
+end
+go
+
+--We create the CUSTOMERS table with the Column [Name] declared as Unique
+--The UNIQUE keyword doesn't allow to have two different customers with the same name
+create table [dbo].[CUSTOMERS] (
+[CustomerNumber] integer IDENTITY (1,1)
+[Name] NVARCHAR(20)UNIQUE,
 
 
