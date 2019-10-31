@@ -503,7 +503,31 @@ go
 --We create the CUSTOMERS table with the Column [Name] declared as Unique
 --The UNIQUE keyword doesn't allow to have two different customers with the same name
 create table [dbo].[CUSTOMERS] (
-[CustomerNumber] integer IDENTITY (1,1)
+[CustomerNumber] integer IDENTITY (1,1),
 [Name] NVARCHAR(20)UNIQUE,
+[City] NVARCHAR(20))
+GO
+
+--Data insertion for the function example
+Insert into dbo.CUSTOMERS ([Name], [City]) values (N'John', 'New York');
+insert into dbo.CUSTOMERS ([Name], [City]) values (N'Ahmed', 'Los Angeles');
+insert into dbo.CUSTOMERS ([Name], [City]) values (N'Jane', 'Miami');
+insert into dbo.CUSTOMERS ([Name], [City]) values (N'Lee', 'Chicago');
+insert into dbo.CUSTOMERS ([Name], [City]) values (N'Diana', 'San Francisco');
+
+--Lets verify the inserted lines for our 5 customers
+select * from dbo.CUSTOMERS;
+--Code end
+
+--Start Output
+CustomerNumber	Name	City
+1	John	New York
+2	Ahmed	Los Angeles
+3	Jane	Miami
+4	Lee	Chicago
+5	Diana	San Francisco
+--end
+
+
 
 
