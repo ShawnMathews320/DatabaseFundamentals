@@ -378,6 +378,76 @@ where c.is_nullable = 0 and object_name(c.object_ID) = 'Table_Name'
 --end
 
 #23
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get All Table that don't have Primary Key
 
+--Code Start
+select name as Table_Name
+from sys.tables
+where objectproperty(object_id,'TableHasPrimaryKey') = 0
+order by Table_Name;
+--Code end
+
+--Start Output
+Table_Name
+MSreplication_options
+spt_fallback_db
+spt_fallback_dev
+spt_fallback_usg
+spt_monitor
+--end
+
+#24
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get First Date of Current Month
+
+--Code Start
+select convert(varchar(25),dateadd(day,-
+(day(getdate()))+1,getdate()),105) First_Date_Current_Month;
+-Code end
+
+--Start Output
+First_Date_Current_Month
+01-10-2019
+--end
+
+#25
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Swap the Values of Two Columns
+
+--Code Start
+select d.City,d.Name from dbo.Customers d
+update dbo.Customers
+set
+dbo.Customers.City = dbo.Customers.Name,
+dbo.Customers.Name = dbo.Customers.City
+select d.City,d.Name from dbo.Customers d
+--Code end
+
+--Source Output
+COME BACK&FIX!!!
+--end
+
+#26
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Remove All Stored Procedure From Database
+
+--Code Start
+Declare @Drop_SP Nvarchar(MAX)
+Declare My_Cursor Cursor for Select [name] from sys.objects where type = 'p'
+Open My_Cursor
+Fetch Next From My_Cursor into @Drop_SP
+while @@Fetch_Status = 0
+begin exec('Drop Procedure ' + @Drop_SP)
+Fetch Next From My_Cursor Into @Drop_SP
+end Close My_Cursor
+Deallocate My_Cursor
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+#27
 
 
