@@ -353,11 +353,31 @@ GO
 
 --Code Start
 select Object_Name(c.Object_ID) as Table_Name, c.name as Column_Name
-from sys columns as c
+from sys.columns as c
 join sys.types as t on c.user_type_id = t.user_type_id
 where t.Name = 'Data_Type'
 --Code end
 
+--Start Output
+0 rows affected
+--end
+
+#22
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get All Nullable Columns of a Table
+
+--Code Start
+select object_name(c.object_ID) as Table_Name, c.name as Column_Name
+from sys.columns as c
+join sys.types as t on c.user_type_id = t.user_type_id
+where c.is_nullable = 0 and object_name(c.object_ID) = 'Table_Name'
+--Code end
+
+--Start Output
+0 rows affected
+--end
+
+#23
 
 
 
