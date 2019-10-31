@@ -449,5 +449,42 @@ Commands completed successfully
 --end
 
 #27
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Drop All Tables
+
+--Code Start
+exec sys.sp_Msforeachtable @command1 = 'Drop Table ?'
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+#28
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get Information of Table's Columns
+
+--Code Start
+select * from INFORMATION_SCHEMA.COLUMNS
+where INFORMATION_SCHEMA.COLUMNS.TABLE_NAME = 'dbo.ActiveInvoices'
+--Code end
+
+--Start Output
+0 rows affected
+--end
+
+#29
+--From https://www.c-sharpcorner.com/article/50-important-queries-in-sql-server/
+--Get All Columns of Table that Using in Views
+
+--Code Start
+select * from INFORMATION_SCHEMA.VIEW_COLUMN_USAGE
+--Code end
+
+--Start Output
+0 rows affected
+--end
+
+#30
 
 
