@@ -528,6 +528,94 @@ CustomerNumber	Name	City
 5	Diana	San Francisco
 --end
 
+#31
+--From https://expert-only.net/sql-server/functions/sql-server-user-defined-functions-example-queries/
+--User Defined Function
+
+--Code Start (This function takes the customer number as a parameter
+and returns the customer name. The result is stored in the @ClientName variable.)
+Create Function dbo.ufnDisplayCustomers(@CustomerNumber integer)
+returns NVARCHAR(20)
+as begin
+declare @ClientName as NVARCHAR(20);
+select @ClientName = [Name]
+from [dbo].[CUSTOMERS]
+where [CustomerNumber] = @CustomerNumber;
+return @ClientName;
+end 
+Go
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+--#32
+--From https://expert-only.net/sql-server/functions/sql-server-user-defined-functions-example-queries/
+--Modify a function
+
+--Code Start
+Alter Function dbo.ufnDisplayCustomers(@CustomerNumber integer)
+returns NVARCHAR (40)
+as begin
+declare @NameCityCustomer as NVARCHAR(20);
+select @NameCityCustomer = [Name] + '-' + [CustCity]
+from [dbo].[CUSTOMERS]
+where [CustomerNumber] = @CustomerNumber;
+return @NameCityCustomer;
+end
+Go
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+#33
+--From https://expert-only.net/sql-server/functions/sql-server-user-defined-functions-example-queries/
+--Delete user-defined functions
+
+--Code Start
+Drop function ufnDisplayCustomers;
+Go
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+*Additional Query*
+--Test if a function exists before to delete it
+
+--Code Start
+If object_ID (N'dbo.ufnDisplayCustomers', N'FN') is not null
+drop function ufnDisplayCustomers;
+GO
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+*Additional Query*
+--Call user-defined functions
+
+--Code Start
+--This version is returning 'John' and the column name is the default one '(No columnn name)'
+Select dbo.ufnDisplayCustomers(1);
+--Code end
+
+*Alternate Second Version*
+--Code Start
+--This version explicitly names the column as 'CUSTOMER'
+Select dbo.ufnDisplayCustomers(1) as CUSTOMER;
+--Code end
+
+--Start Output
+Commands completed successfully
+--end
+
+
 
 
 
