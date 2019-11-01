@@ -615,7 +615,97 @@ Select dbo.ufnDisplayCustomers(1) as CUSTOMER;
 Commands completed successfully
 --end
 
+#34
+--From http://www.sqlservertutorial.net/sql-server-basics/sql-server-subquery/
+--Subquery (Uses where clause of a select statement to find the sales orders
+of the customers who locate in New York)
 
+--Code Start
+select
+order_id,
+order_date,
+customer_id
+from sales.orders
+where 
+customer_id in (
+select customer_id
+from
+sales.customers
+where
+city = 'New York'
+)
+order by 
+order_date desc;
+--Code end
+
+--Start Output
+**Fix**
+--end
+
+#35
+--From https://blog.sqlauthority.com/2019/08/31/sql-server-simple-example-of-readpast-query-hint/
+--Use of READPAST(Scenario where a client wanted to display all the available
+seats in their cinema hall which are not being processed.)
+
+--Run these queries in order
+
+*First query*
+--Code Start
+Use tempdb
+GO
+
+--Create a table with a few rows
+Create table t1 (ID int)
+Insert into t1 values (1),(2),(3),(4),(5)
+GO
+
+--Next create two side by side sessions
+BEGIN TRANSACTION
+Update t1
+Set ID = ID
+from t1
+where ID in (1,2,5)
+--Code end
+
+--Start Output
+(5 rows affected)
+
+(3 rows affected)
+--end
+
+--Now run the second command
+
+*Second query*
+--Code Start
+Use tempdb
+GO
+
+select *
+from t1 (READPAST)
+--Code end
+
+-- When you run the above statement from line 677 to 678 the query will skip
+all the lock rows and display the available rows.
+
+--Start Output
+ID
+3
+4
+--end
+
+--Two other possibilities instead of hint READPAST
+
+1. Use No Hint - well, in that case, the second statemant would have waited a
+long time and only produced results after the first result was committed or 
+rolled back.
+
+2. Use NoLock Hint - this was not a good idea as it would have displayed all
+the rows which were still locked by users.
+
+--READPAST hint was a perfect solution for this scenario because it skipped
+all the locked rows
+
+#36
 
 
 
