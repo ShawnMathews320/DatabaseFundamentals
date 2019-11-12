@@ -80,7 +80,7 @@ from t1 (READPAST)
 
 
 
--- When you run the above statement from line 677 to 678 the query will skip
+-- When you run the above statement the query will skip
 
 all the lock rows and display the available rows.
 
