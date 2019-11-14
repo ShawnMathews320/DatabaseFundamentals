@@ -1,0 +1,22 @@
+-- From https://www.w3schools.com/sql/sql_create_table.asp
+-- Drop Table and Truncate table Example
+
+-- Code Start
+DROP TABLE table_name; --The DROP TABLE statement drops an existing table in a database
+-- Code End
+
+-- Deleting a table will result in loss of complete information stored in the table
+
+-- Output:
+Commands Completed Successfully
+-- Output End
+
+-- Code Start
+TRUNCATE TABLE table_name;
+-- Code End
+
+-- The TRUNCATE TABLE statement is used to delete the data inside a table, but not the table itself
+
+-- Output:
+Commands Completed Successfully
+-- Output End
