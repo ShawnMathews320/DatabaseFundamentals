@@ -1,0 +1,14 @@
+-- From https://www.w3schools.com/sql/sql_create_table.asp
+-- Create Table Example
+
+-- Code Start
+CREATE TABLE Persons
+  PersonID int,           -- The PersonID column is an int type and will hold an integer
+  LastName varchar(255),  -- The maximum length for each of these fields is 255 characters
+  FirstName varchar(255),
+  Address varchar(255),
+  City varchar(255)
+);                        -- The empty 'Persons' table can now be filled with data with the SQL INSERT INTO statement
+-- Code End
+
+--  This creates a table called 'Persons' that contains five columns: PersonID, LastName, FirstName, Address, and City
