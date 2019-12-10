@@ -1,0 +1,12 @@
+-- From https://www.w3schools.com/sqL/sql_view.asp
+-- Create View Example
+
+-- Code Start
+CREATE VIEW [Brazil Customers] AS -- Customers from Brazil
+SELECT CustomerName, ContactName
+FROM Customers
+WHERE Country = "Brazil";
+-- Code End
+-- Creates a view that shows all customers from Brazil
+
+-- A view contains rows and columns, just like a real table. The fields in a view are fields from one or more real tables in the database.
