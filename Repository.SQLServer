@@ -706,6 +706,42 @@ the rows which were still locked by users.
 all the locked rows
 
 #36
+--From https://expert-only.net/sql-server/functions/sql-server-user-defined-functions-example-queries/
 
+--Modify a function
+
+
+
+--Code Start
+
+Alter Function dbo.ufnDisplayCustomers(@CustomerNumber integer)
+
+returns NVARCHAR (40)
+
+as begin
+
+declare @NameCityCustomer as NVARCHAR(20);
+
+select @NameCityCustomer = [Name] + '-' + [CustCity]
+
+from [dbo].[CUSTOMERS]
+
+where [CustomerNumber] = @CustomerNumber;
+
+return @NameCityCustomer;
+
+end
+
+Go
+
+--Code end
+
+
+
+--Start Output
+
+Commands completed successfully
+
+--end
 
 
